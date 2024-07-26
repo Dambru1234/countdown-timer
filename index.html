@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1 id="headline">Countdown Timer</h1>
+    <div id="countdown">
+        <ul>
+           
+            <li><span id="hours"></span> </li>
+            <li><span id="minutes"></span> </li>
+            <li><span id="seconds"></span> </li>
+        </ul>
+    </div>
+    <div id="content" class="emoji">
+        <span>🥳</span>
+        <span>🎉</span>
+        <span>🎂</span>
+    </div>
+
+    <!-- Controls for custom countdown -->
+    <div class="controls">
+        <input type="number" id="inputHours" placeholder="Hours" min="0">
+        <input type="number" id="inputMinutes" placeholder="Minutes" min="0">
+        <input type="number" id="inputSeconds" placeholder="Seconds" min="0">
+        <br>
+        <input type="button" value="Start" onclick="startCountdown()">
+        <input type="button" value="Stop" onclick="stopCountdown()">
+        <input type="button" value="Reset" onclick="resetCountdown()">
+    </div>
+</div>
+
+<script>
+    let countdownTimer;
+    let countDownDate;
+
+    function startCountdown() {
+        const hours = parseInt(document.getElementById('inputHours').value) || 0;
+        const minutes = parseInt(document.getElementById('inputMinutes').value) || 0;
+        const seconds = parseInt(document.getElementById('inputSeconds').value) || 0;
+
+        // Calculate the countdown date
+        countDownDate = new Date().getTime() + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
+        
+        // Start the countdown
+        countdownTimer = setInterval(updateCountdown, 1000);
+    }
+
+    function stopCountdown() {
+        clearInterval(countdownTimer);
+    }
+
+    function resetCountdown() {
+        clearInterval(countdownTimer);
+        document.getElementById('days').innerText = '0';
+        document.getElementById('hours').innerText = '0';
+        document.getElementById('minutes').innerText = '0';
+        document.getElementById('seconds').innerText = '0';
+        document.getElementById('headline').innerText = 'Countdown Timer';
+        document.getElementById('countdown').style.display = 'block';
+        document.getElementById('content').style.display = 'none';
+    }
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        if (distance < 0) {
+            clearInterval(countdownTimer);
+            document.getElementById('headline').innerText = "It's the big day!";
+            document.getElementById('countdown').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+            return;
+        }
+
+        const day = 1000 * 60 * 60 * 24;
+        const hour = 1000 * 60 * 60;
+        const minute = 1000 * 60;
+        const second = 1000;
+
+        document.getElementById('days').innerText = Math.floor(distance / day);
+        document.getElementById('hours').innerText = Math.floor((distance % day) / hour);
+        document.getElementById('minutes').innerText = Math.floor((distance % hour) / minute);
+        document.getElementById('seconds').innerText = Math.floor((distance % minute) / second);
+    }
+</script>
+
+</body>
+</html>
